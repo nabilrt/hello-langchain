@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
 load_dotenv()
 
 def main() -> None:
@@ -25,14 +26,12 @@ Musk is a supporter of global far-right politics, figures, and political parties
         input_variables=["information"], template=summary_template
     )
 
-    llm=ChatGoogleGenerativeAI(
-        model="gemini-3.8-flash", temperature=0
-    )
-
+    llm=ChatGoogleGenerativeAI(model="gemini-3.8-flash", temperature=0)
+    #llm=ChatOllama(model="gemma3:1b",temperature=0)
     chain=summary_prompt_template | llm
 
     response=chain.invoke(input={"information":information})
-    print(response.content[0]["text"])
+    print(response.content)
 
 if __name__ == "__main__":
     main()
